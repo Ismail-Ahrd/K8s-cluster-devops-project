@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: myapp-backend-config
-  namespace: exam
+  namespace: devops
 data:
   host: mysql-service
   dbname: projectdb
@@ -13,7 +13,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: myapp-backend-service
-  namespace: exam
+  namespace: devops
 spec:
   selector:
     app: myapp-backend
@@ -26,7 +26,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: myapp-backend-deployment
-  namespace: exam
+  namespace: devops
 spec:
   replicas: 2
   selector:
