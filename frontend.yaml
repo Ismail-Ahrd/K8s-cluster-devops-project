@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-frontend-service
+  namespace: devops
+spec:
+  selector:
+    app: myapp-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-frontend-deployment
+  namespace: devops
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: myapp-frontend
+  template:
+    metadata:
+      labels:
+        app: myapp-frontend
+    spec:
+      containers:
+        - name: myapp-frontend
+          image: aharoud/frontend:app
+          ports:
+            - containerPort: 80
+              name: http-port

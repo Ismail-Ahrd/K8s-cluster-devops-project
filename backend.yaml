@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: myapp-backend-config
+  namespace: exam
+data:
+  host: mysql-service
+  dbname: projectdb
+  username: root
+  allowed-origin: '*'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-backend-service
+  namespace: exam
+spec:
+  selector:
+    app: myapp-backend
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-backend-deployment
+  namespace: exam
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: myapp-backend
+  template:
+    metadata:
+      labels:
+        app: myapp-backend
+    spec:
+      containers:
+        - name: myapp-backend
+          image: aharoud/bakend-app:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: password
+            - name: MYSQL_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: myapp-backend-config
+                  key: username
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: myapp-backend-config
+                  key: host
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: myapp-backend-config
+                  key: dbname
+            - name: ALLOWED_ORIGIN
+              valueFrom:
+                configMapKeyRef:
+                  name: myapp-backend-config
+                  key: allowed-origin   
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 3
+            timeoutSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 5
+            timeoutSeconds: 15
