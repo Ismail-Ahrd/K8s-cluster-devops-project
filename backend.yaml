@@ -68,17 +68,3 @@ spec:
                 configMapKeyRef:
                   name: myapp-backend-config
                   key: allowed-origin   
-          livenessProbe:
-            httpGet:
-              path: /actuator/health/liveness
-              port: 8080
-            initialDelaySeconds: 60
-            periodSeconds: 3
-            timeoutSeconds: 15
-          readinessProbe:
-            httpGet:
-              path: /actuator/health/readiness
-              port: 8080
-            initialDelaySeconds: 60
-            periodSeconds: 5
-            timeoutSeconds: 15

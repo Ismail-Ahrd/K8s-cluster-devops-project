@@ -50,15 +50,7 @@ spec:
               name: db-port
           volumeMounts:
             - name: mysql-data
-              mountPath: /var/lib/mysql
-          startupProbe:
-            exec:
-              command:
-                - cd
-                - /var/lib/mysql/projectdb
-            initialDelaySeconds: 5
-            periodSeconds: 5
-            failureThreshold: 5        
+              mountPath: /var/lib/mysql       
   volumeClaimTemplates:
     - metadata:
         name: mysql-data
