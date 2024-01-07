@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
         - name: myapp-frontend
-          image: aharoud/frontend-app:""
+          image: aharoud/frontend-app:1.0.0
           ports:
             - containerPort: 80
               name: http-port
