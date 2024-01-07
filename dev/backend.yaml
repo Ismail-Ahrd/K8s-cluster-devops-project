@@ -39,7 +39,7 @@ spec:
     spec:
       containers:
         - name: myapp-backend
-          image: aharoud/backend-app:latest
+          image: aharoud/backend-app:
           ports:
             - containerPort: 8080
           env:
